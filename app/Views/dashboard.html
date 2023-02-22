@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+    
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+        
+        <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    
+    <title>Developer Test Pitjarus</title>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <!-- Form Section -->
+                <form action="/" method="post">
+                    <div class="row mt-5">
+                        <div class="col">
+                            <select class="form-control selectpicker show-tick" multiple name="area_name[]" id="area_name" title="Select Area">
+                                <?php foreach ($area_name_dropdown as $row) : ?>
+                                <option value="<?= $row; ?>"><?= $row; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input type="date" class="form-control" name="date_from" id="date_from" placeholder="Select Date From" value="<?= $form['date_from']; ?>" />
+                        </div>
+                        <div class="col">
+                            <input type="date" class="form-control" name="date_to" id="date_to" placeholder="Select Date To" value="<?= $form['date_to']; ?>" />
+                        </div>
+                        <div class="col">
+                            <input type="submit" class="form-control btn-success" name="submit" value="View">
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Chart Section -->
+                <canvas id="myChart" width="400" height="120" aria-label="Hello ARIA World" role="img" class="mt-5 w-100"></canvas>
+
+                <!-- Table Section -->
+                <table class="table mt-5">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <?php foreach ($area_name as $row) : ?>
+                        <th scope="col"><?= $row; ?></th>
+                        <?php endforeach; ?>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($table as $row => $row_value) : ?>
+                      <tr>
+                            <th scope="row"><?= $row; ?></th>
+                            <?php foreach ($row_value as $value) : ?>
+                                <td><?= $value."%"; ?></td>
+                            <?php endforeach; ?>
+                      </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>                
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- Chart Javascript -->
+    <script>
+        var xValues = <?= json_encode($area_name); ?>;
+        var yValues = <?= json_encode($nilai); ?>;
+        var barColors = ["red", "green", "blue", "orange", "brown"];
+
+        new Chart("myChart", {
+            type: "bar",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    label: "Nilai",
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
+                title: {
+                    display: true,
+                    text: "Product Compliance Report"
+                },
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            suggestedMax: 100,    // maximum value will be 100
+                            beginAtZero: true   // minimum value will be 0.
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Percentage(%)'
+                        }
+                    }]
+                }
+            },
+        });
+    </script>
+    </body>
+
+</html>
